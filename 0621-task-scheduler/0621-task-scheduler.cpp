@@ -1,13 +1,21 @@
 class Solution {
 public:
-    int cnt[26], maxcnt = 0, e = 0;
+  
     int leastInterval(vector<char>& tasks, int n) {
-        for (char c : tasks) cnt[c-'A']++;
-        for (int i = 0; i < 26; i++) maxcnt = max(maxcnt, cnt[i]);
-        for (int i = 0; i < 26; i++) 
-            if (cnt[i] == maxcnt){cout<<"Enter: "<<cnt[i]<<endl; e++;}
-        int sz=tasks.size();
-        cout<<(maxcnt-1)*(n+1)<<endl;
-        return max(sz, (maxcnt-1)*(n+1) + e);
+       unordered_map<char,int>mp;
+        for(auto t:tasks){
+            mp[t]++;
+        }
+        vector<int>vec;
+        for(auto i:mp)vec.push_back(i.second);
+        sort(vec.begin(),vec.end());
+        reverse(vec.begin(),vec.end());
+        cout<<vec[0]-1<<endl;
+        int ideal=(vec[0]-1)*n;
+        
+        for(int i=1;i<vec.size();i++){
+            ideal-=(min(vec[0]-1,vec[i]));
+        }
+        return max(ideal+tasks.size(),tasks.size());
     }
 };
