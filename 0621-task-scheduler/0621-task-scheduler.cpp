@@ -1,21 +1,27 @@
 class Solution {
-public:
-  
+public: 
     int leastInterval(vector<char>& tasks, int n) {
-       unordered_map<char,int>mp;
-        for(auto t:tasks){
-            mp[t]++;
-        }
-        vector<int>vec;
-        for(auto i:mp)vec.push_back(i.second);
-        sort(vec.begin(),vec.end());
-        reverse(vec.begin(),vec.end());
-        cout<<vec[0]-1<<endl;
-        int ideal=(vec[0]-1)*n;
+       unordered_map<char,int>ump;
+       priority_queue<int>pq;
         
-        for(int i=1;i<vec.size();i++){
-            ideal-=(min(vec[0]-1,vec[i]));
+        for(auto t:tasks)ump[t]++;
+        for(auto i:ump)pq.push(i.second);
+        int ans=0;
+        while(!pq.empty()){
+            int time=0;
+            vector<int>temp;
+            for(int i=0;i<n+1;i++){
+                if(!pq.empty()){
+                    temp.push_back(pq.top()-1);
+                    pq.pop();
+                    time++;
+                }
+            }
+            for(auto t:temp){
+                if(t)pq.push(t);
+            }
+            ans+=(pq.empty()?time:n+1);
         }
-        return max(ideal+tasks.size(),tasks.size());
+        return ans;
     }
 };
