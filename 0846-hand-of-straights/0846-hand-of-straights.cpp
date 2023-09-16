@@ -4,22 +4,26 @@ public:
         if(hand.size()%groupSize!=0)return false;
         map<int,int>mp;
         for(auto h:hand)mp[h]++;
-        int ct=0;
-        while(ct<hand.size()){
-            int sz=groupSize;
-            int prev=-1;
-            for(auto i:mp){
-                cout<<"prev: "<<prev<<endl;
-                cout<<i.first<<"   "<<i.second<<endl;
-            if(prev!=-1 and i.first!=prev+1){cout<<"here: "<<prev<<"  "<<prev<<"  "<<i.first<<endl; return false;}
-                ct++;
-                mp[i.first]--;
-                if(mp[i.first]==0){cout<<"erasing: "<<i.first<<endl; mp.erase(i.first);}
-                sz--;
-                prev=i.first;
-                if(sz==0)break;
+        priority_queue<int,vector<int>,greater<int>>pq;
+        for(auto i:mp)pq.push(i.first);
+        while(!pq.empty()){
+            int top=pq.top();
+            cout<<"top: "<<top<<endl;
+            int sz=groupSize-1;
+            mp[top]--;
+            if(mp[top]==0)pq.pop();
+            while(sz--){
+                if(mp[top+1]==0){cout<<"not exist: "<<top+1<<endl; return false;}
+                mp[top+1]--;
+                if(mp[top+1]==0){
+                    cout<<"become zero: "<<top+1<<endl;
+                    int ntop=pq.top();
+                    cout<<"ntop: "<<ntop<<endl;
+                    if(ntop==top+1){cout<<"equal so pop"<<endl; pq.pop();}
+                    else return false;
+                } 
+                top++;
             }
-            if(sz>0){cout<<"szHere: "<<sz<<endl; return false;}
         }
         return true;
     }
