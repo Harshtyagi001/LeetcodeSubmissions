@@ -22,25 +22,20 @@ public:
             cout<<user<<endl;
             if(mpq[user].size()>0){
                 int index=mpq[user].size()-1;
-                cout<<"index: "<<index<<endl;
-               if(index>=0){ cout<<"entering..."<<endl; pq.push({mpq[user][index].first,{mpq[user][index].second,user,index}});}
+               if(index>=0){
+         pq.push({mpq[user][index].first,{mpq[user][index].second,user,index}});
+               }
             }
         }
         while(!pq.empty() and sz--){
-            cout<<"while loop"<<pq.size()<<endl;
             auto top=pq.top();
-            cout<<"top found"<<endl;
             vector<int>temp=top.second;
-            cout<<temp.size()<<endl;
             int user=temp[1];
             int ind=temp[2];
-            cout<<"user: "<<user<<"  ind: "<<ind<<endl;
             pq.pop();
             ans.push_back(temp[0]);
-            cout<<"pushing ans"<<endl;
             if(ind-1>=0){
-                cout<<"somethig to push"<<endl;
-                pq.push({mpq[user][ind-1].first,{mpq[user][ind-1].second,user,ind-1}});
+            pq.push({mpq[user][ind-1].first,{mpq[user][ind-1].second,user,ind-1}});
             }
         }
         return ans;
