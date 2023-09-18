@@ -3,11 +3,14 @@ public:
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         for(int i=0;i<mat.size();i++){
-            int ct=0;
-            for(auto j:mat[i]){
-                if(j==1)ct++;
+            int low=0,high=mat[i].size()-1;
+            while(low<high){
+                int mid=low+(high-low)/2;
+                if(mat[i][mid]==0)high=mid;
+                else low=mid+1;
             }
-            pq.push({ct,i});
+            low=(mat[i][low]==1)?low+1:low;
+            pq.push({low,i});
         }
         vector<int>ans;
         while(k-- and !pq.empty()){
